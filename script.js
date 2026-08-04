@@ -80,7 +80,8 @@ function applyExploreFilters() {
 
   cards.forEach(card => {
     const visible = activityMatchesFilters(card);
-    card.hidden = !visible;
+    card.style.display = visible ? "flex" : "none";
+    card.setAttribute("aria-hidden", visible ? "false" : "true");
     if (visible) visibleCount += 1;
   });
 
