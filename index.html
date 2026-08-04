@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Visit Taniti — Interactive Prototype</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="phone">
+
+  <!-- SCREEN 1: HOME -->
+  <div class="screen active" id="home">
+    <nav><div class="brand">VISIT TANITI</div><div class="menu"><span>Explore</span><span>Plan</span><span>☰</span></div></nav>
+    <div class="hero">
+      <h1>Welcome to Taniti</h1>
+      <p>Beaches, rainforest, and volcano adventures for the whole family.</p>
+      <div class="search"><input placeholder="Search activities, dates..."><button onclick="go('explore')">Go</button></div>
+    </div>
+    <div class="section-title">Popular Attractions</div>
+    <div class="cardrow">
+      <div class="minicard" onclick="showDetail('volcano')"><div class="ph"></div>Volcano Rim Hike</div>
+      <div class="minicard" onclick="showDetail('snorkel')"><div class="ph"></div>Snorkeling</div>
+      <div class="minicard" onclick="showDetail('zipline')"><div class="ph"></div>Rainforest Zip-line</div>
+    </div>
+    <div class="planbox" onclick="go('plan')">📍 <b>Plan Your Trip</b><br>Lodging, getting around, and good-to-know info — updated for the family traveler.</div>
+    <button class="cta" onclick="go('explore')">Explore Activities →</button>
+    <footer class="foot">Visit Taniti · Contact · Currency: USD</footer>
+  </div>
+
+  <!-- SCREEN: PLAN (practical info) -->
+  <div class="screen" id="plan">
+    <div class="backbar" onclick="go('home')">← Back to Home</div>
+    <div class="detailbody">
+      <h2>Plan Your Trip</h2>
+      <div class="infobox"><b>Getting here:</b> Most visitors arrive by air; a weekly cruise ship docks in Yellow Leaf Bay.</div>
+      <div class="infobox"><b>Getting around:</b> Rental cars, hotel shuttles, taxis, and public buses (5am–11pm) serve Taniti City. Bikes require helmets by law.</div>
+      <div class="infobox"><b>Good to know:</b> USD is accepted island-wide; power outlets are 120V; the hospital has multilingual staff.</div>
+    </div>
+    <button class="cta" onclick="go('explore')">Browse Activities →</button>
+  </div>
+
+  <!-- SCREEN 2: EXPLORE / LIST -->
+  <div class="screen" id="explore">
+    <div class="backbar" onclick="go('home')">← Back to Home</div>
+    <div class="filterbar">
+      <div class="chip on">Family-friendly</div>
+      <div class="chip">Beach</div>
+      <div class="chip">Rainforest</div>
+      <div class="chip">Under 3 hrs</div>
+      <div class="chip">Under $50</div>
+    </div>
+    <div class="listcard" onclick="showDetail('volcano')">
+      <div class="ph"></div>
+      <div><h3>Volcano Rim Hike</h3><p>Half-day · Moderate · $45</p><p class="stars">★★★★☆ (128)</p></div>
+    </div>
+    <div class="listcard" onclick="showDetail('snorkel')">
+      <div class="ph"></div>
+      <div><h3>Snorkeling, Yellow Leaf Bay</h3><p>2 hrs · Easy · $30</p><p class="stars">★★★★★ (95)</p></div>
+    </div>
+    <div class="listcard" onclick="showDetail('zipline')">
+      <div class="ph"></div>
+      <div><h3>Rainforest Zip-line</h3><p>3 hrs · Moderate · $60</p><p class="stars">★★★★☆ (61)</p></div>
+    </div>
+    <footer class="foot">Showing 3 of 14 family-friendly activities</footer>
+  </div>
+
+  <!-- SCREEN 3: DETAIL (content injected by showDetail()) -->
+  <div class="screen" id="detail">
+    <div class="backbar" onclick="go('explore')">← Back to Results</div>
+    <div class="detailimg"></div>
+    <div class="detailbody">
+      <span class="badge">Family-friendly</span>
+      <h2 id="d-title">Activity Name</h2>
+      <div class="meta" id="d-meta">duration · difficulty · meeting point</div>
+      <div class="infobox" id="d-desc">Description</div>
+      <p class="stars" id="d-reviews">★★★★☆ reviews</p>
+    </div>
+    <button class="cta" id="d-book-btn" onclick="go('book')">Book Now</button>
+  </div>
+
+  <!-- SCREEN 4: BOOK (content injected) -->
+  <div class="screen" id="book">
+    <div class="backbar" onclick="go('detail')">← Back</div>
+    <div class="detailbody"><h2>Book This Activity</h2><div class="meta" id="b-title">Activity</div></div>
+    <form onsubmit="return false;">
+      <label>Date</label><input type="date">
+      <label>Time</label><select><option>8:00 AM</option><option>1:00 PM</option></select>
+      <label>Party size</label><input type="number" id="b-party" value="4" min="1" oninput="updateSummary()">
+      <label>Name</label><input placeholder="Full name">
+      <label>Email or phone</label><input placeholder="you@example.com">
+      <div class="summary" id="b-summary"><b>Order Summary</b><br>4 guests × $45 = $180</div>
+    </form>
+    <button class="cta" onclick="go('confirm')">Confirm Booking</button>
+  </div>
+
+  <!-- SCREEN 5: CONFIRMATION (content injected) -->
+  <div class="screen" id="confirm">
+    <div class="confirm-wrap">
+      <div class="check">✓</div>
+      <h2 style="margin:0 0 6px;">You're booked!</h2>
+      <p style="font-size:12px;color:#556;">Confirmation sent to your email.</p>
+      <div class="conf-card" id="c-summary">
+        <b>Volcano Rim Hike</b><br>
+        Saturday · 10:00 AM · 4 guests<br>
+        Confirmation #TN-0472<br>
+        Meet at Merriton Landing kiosk
+      </div>
+    </div>
+    <div class="rowbtns">
+      <button class="secondary" onclick="go('explore')">Book Another Activity</button>
+      <button class="primary" onclick="go('home')">Back to Home</button>
+    </div>
+  </div>
+
+</div>
+<p style="text-align:center;font-size:11px;color:#889;">Prototype build — click through: Home → Plan/Explore → Detail → Book → Confirmation</p>
+<script src="script.js"></script>
+</body>
+</html>
