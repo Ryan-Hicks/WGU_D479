@@ -58,3 +58,56 @@ function go(id){
   document.getElementById(id).classList.add('active');
   window.scrollTo(0, 0);
 }
+
+// Explore-page filters. Multiple selected filters are combined.
+// Example: Family-friendly + Under $50 shows only matching activities.
+const activeFilters = new Set(["family"]);
+
+function activityMatchesFilters(card) {
+  for (const filter of activeFilters) {
+    if (filter === "family" && card.dataset.family !== "true") return false;
+    if (filter === "beach" && card.dataset.category !== "beach") return false;
+    if (filter === "rainforest" && card.dataset.category !== "rainforest") return false;
+    if (filter === "under3" && Number(card.dataset.duration) >= 3) return false;
+    if (filter === "under50" && Number(card.dataset.price) >= 50) return false;
+  }
+  return true;
+}
+
+function applyExploreFilters() {
+  const cards = [...document.querySelectorAll("#explore .listcard")];
+  let visibleCount = 0;
+
+  cards.forEach(card => {
+    const visible = activityMatchesFilters(card);
+    card.hidden = !visible;
+    if (visible) visibleCount += 1;
+  });
+
+  const count = document.getElementById("results-count");
+  if (count) {
+    count.textContent =
+      visibleCount === 1 ? "Showing 1 activity" : `Showing ${visibleCount} activities`;
+  }
+}
+
+document.querySelectorAll("#explore .chip").forEach(chip => {
+  chip.addEventListener("click", () => {
+    const filter = chip.dataset.filter;
+
+    if (activeFilters.has(filter)) {
+      activeFilters.delete(filter);
+      chip.classList.remove("on");
+      chip.setAttribute("aria-pressed", "false");
+    } else {
+      activeFilters.add(filter);
+      chip.classList.add("on");
+      chip.setAttribute("aria-pressed", "true");
+    }
+
+    applyExploreFilters();
+  });
+});
+
+applyExploreFilters();
+
